@@ -1,0 +1,50 @@
+openapi: "3.0.0"
+info:
+  title: CoworkingSpace API
+  version: "1.0.0"
+  description: API para la gestión de espacios de coworking
+
+servers:
+- url: https://api.coworkingspace.com/api/v1
+
+paths:
+  /reservations:
+    post:
+      summary: Crear una reservación
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+      responses:
+        "201":
+          description: Reservación creada exitosamente
+        "400":
+          description: Rango de fechas inválido
+        "409":
+          description: Espacio no disponible
+
+  /spaces/{spaceId}/availability:
+    put:
+      summary: Actualizar disponibilidad de un espacio
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: spaceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Disponibilidad actualizada correctamente
+        "403":
+          description: Sin permisos suficientes
+        "404":
+          description: Espacio no encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
